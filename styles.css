@@ -167,14 +167,49 @@ input[type="range"] {
 
 .metric-pill.theory {
   border-color: rgba(47, 111, 187, 0.34);
+  background: rgba(47, 111, 187, 0.08);
 }
 
 .metric-pill.practical {
   border-color: rgba(213, 107, 48, 0.38);
+  background: rgba(213, 107, 48, 0.1);
 }
 
 .metric-pill.summary {
   border-color: rgba(15, 143, 114, 0.38);
+  background: rgba(15, 143, 114, 0.08);
+}
+
+.metric-pill strong {
+  font-weight: 800;
+}
+
+.metric-tag,
+.table-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  min-height: 18px;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.metric-pill.theory .metric-tag,
+.problem-header.theory .table-tag {
+  background: var(--blue);
+}
+
+.metric-pill.practical .metric-tag,
+.problem-header.practical .table-tag {
+  background: var(--orange);
+}
+
+.metric-pill.summary .metric-tag {
+  background: var(--green);
 }
 
 .filter-block {
@@ -350,10 +385,22 @@ th {
 }
 
 th button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 5px;
   border: 0;
   background: transparent;
   font-weight: 800;
   padding: 0;
+}
+
+.problem-header.theory {
+  background: #eaf2fb;
+}
+
+.problem-header.practical {
+  background: #fff0e4;
 }
 
 td:nth-child(2),

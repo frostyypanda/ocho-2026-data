@@ -32,6 +32,7 @@ PARTICIPANTS.forEach((person, index) => {
 
 const totalMax = CONTEST.totals.theory + CONTEST.totals.practical;
 assert(totalMax === CONTEST.totals.total, "summary max totals add to 100");
+assertProblemLabels();
 assertClose(summaryFor("total", PARTICIPANTS, "percent").q1, 47.31, "total Q1 percent");
 assertClose(summaryFor("total", PARTICIPANTS, "percent").median, 51.03, "total median percent");
 assertClose(summaryFor("total", PARTICIPANTS, "percent").q3, 67.35, "total Q3 percent");
@@ -46,6 +47,12 @@ function sumProblems(person, group) {
 
 function find(id) {
   return PARTICIPANTS.find((person) => person.id === id);
+}
+
+function assertProblemLabels() {
+  const labels = PROBLEMS.map((problem) => problem.label).join("|");
+  const expected = "Komplexe|Stereo|Thermo|Bio + OC|GGW|Radio + Pb|Kinetik|Elektro|Synthese|Titration|Tüpfeln";
+  assert(labels === expected, "problem labels match requested order");
 }
 
 function assertClose(actual, expected, label) {

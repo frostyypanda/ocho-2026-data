@@ -10,7 +10,7 @@ export function renderDetailTable(element, people, state, onSort) {
     ["theory", "Theory"],
     ["practical", "Practical"],
     ["total", "Total"],
-    ...PROBLEMS.map((problem) => [problem.id, problem.id]),
+    ...PROBLEMS.map((problem) => [problem.id, problem.label, problem.group]),
     ["prize", "Prize"],
   ];
   element.innerHTML = `<table><thead><tr>${headers.map((header) => headerCell(header, state.sort)).join("")}</tr></thead><tbody>${rows
@@ -36,9 +36,11 @@ function tableRow(person, state) {
   return `<tr class="${selected ? "selected" : ""}">${cells.map((cell) => `<td>${cell}</td>`).join("")}</tr>`;
 }
 
-function headerCell([key, label], sort) {
+function headerCell([key, label, group], sort) {
   const arrow = sort.key === key ? (sort.dir === "asc" ? "^" : "v") : "";
-  return `<th><button data-sort="${key}">${label} ${arrow}</button></th>`;
+  const tag = group ? `<span class="table-tag">${group === "theory" ? "T" : "P"}</span>` : "";
+  const cls = group ? ` class="problem-header ${group}"` : "";
+  return `<th${cls}><button data-sort="${key}">${tag}${label} ${arrow}</button></th>`;
 }
 
 function compareRows(a, b, sort) {

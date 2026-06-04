@@ -7,17 +7,17 @@ export const CONTEST = {
 };
 
 export const PROBLEMS = [
-  { id: "T1", group: "theory", label: "Theory 1", maxRaw: 16, maxPoints: 5 },
-  { id: "T2", group: "theory", label: "Theory 2", maxRaw: 25, maxPoints: 10 },
-  { id: "T3", group: "theory", label: "Theory 3", maxRaw: 36, maxPoints: 11 },
-  { id: "T4", group: "theory", label: "Theory 4", maxRaw: 91, maxPoints: 16 },
-  { id: "T5", group: "theory", label: "Theory 5", maxRaw: 17, maxPoints: 4.5 },
-  { id: "T6", group: "theory", label: "Theory 6", maxRaw: 25, maxPoints: 5.5 },
-  { id: "T7", group: "theory", label: "Theory 7", maxRaw: 16, maxPoints: 4 },
-  { id: "T8", group: "theory", label: "Theory 8", maxRaw: 16, maxPoints: 4 },
-  { id: "P9", group: "practical", label: "Practical 9", maxRaw: 41.5, maxPoints: 14 },
-  { id: "P10", group: "practical", label: "Practical 10", maxRaw: 57.5, maxPoints: 14 },
-  { id: "P11", group: "practical", label: "Practical 11", maxRaw: 44, maxPoints: 12 },
+  { id: "T1", group: "theory", label: "Komplexe", maxRaw: 16, maxPoints: 5 },
+  { id: "T2", group: "theory", label: "Stereo", maxRaw: 25, maxPoints: 10 },
+  { id: "T3", group: "theory", label: "Thermo", maxRaw: 36, maxPoints: 11 },
+  { id: "T4", group: "theory", label: "Bio + OC", maxRaw: 91, maxPoints: 16 },
+  { id: "T5", group: "theory", label: "GGW", maxRaw: 17, maxPoints: 4.5 },
+  { id: "T6", group: "theory", label: "Radio + Pb", maxRaw: 25, maxPoints: 5.5 },
+  { id: "T7", group: "theory", label: "Kinetik", maxRaw: 16, maxPoints: 4 },
+  { id: "T8", group: "theory", label: "Elektro", maxRaw: 16, maxPoints: 4 },
+  { id: "P9", group: "practical", label: "Synthese", maxRaw: 41.5, maxPoints: 14 },
+  { id: "P10", group: "practical", label: "Titration", maxRaw: 57.5, maxPoints: 14 },
+  { id: "P11", group: "practical", label: "Tüpfeln", maxRaw: 44, maxPoints: 12 },
 ];
 
 export const PARTICIPANTS = [

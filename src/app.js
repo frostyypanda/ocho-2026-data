@@ -19,6 +19,7 @@ import {
 } from "./charts.js";
 import { renderDistribution } from "./distribution.js";
 import { renderDetailTable } from "./table.js";
+import { correlationMetricsFrom, metricSelectLabel } from "./controls.js";
 
 const state = {
   view: "overview",
@@ -30,8 +31,8 @@ const state = {
   people: new Set(["glueckert-alexander", "kazazic-kei", "koell-finn"]),
   mode: "percent",
   bucketSize: 5,
-  corrX: "theory",
-  corrY: "practical",
+  corrX: "total",
+  corrY: "theory",
   sort: { key: "rank", dir: "asc" },
 };
 
@@ -89,6 +90,7 @@ function attachEvents() {
     button.addEventListener("click", () => {
       state.metrics = new Set(metricSets[button.dataset.metricSet]);
       syncMetricChecks();
+      syncCorrelationFromMetrics();
       render();
     });
   });
@@ -109,6 +111,7 @@ function attachEvents() {
   el.metricPicker.addEventListener("change", () => {
     state.metrics = new Set(checkedValues("[data-metric]"));
     if (!state.metrics.size) state.metrics.add("total");
+    syncCorrelationFromMetrics();
     render();
   });
   el.regionFilters.addEventListener("change", () => {
@@ -218,7 +221,8 @@ function checkboxList(values, kind) {
 
 function metricCheckbox(metric) {
   const checked = state.metrics.has(metric.id) ? "checked" : "";
-  return `<label class="metric-pill ${metric.group}"><input type="checkbox" data-metric value="${metric.id}" ${checked}> ${metric.label}</label>`;
+  const tag = metric.group === "summary" ? "Sum" : metric.group === "theory" ? "Theory" : "Practical";
+  return `<label class="metric-pill ${metric.group}"><input type="checkbox" data-metric value="${metric.id}" ${checked}><span class="metric-tag">${tag}</span><strong>${metric.label}</strong></label>`;
 }
 
 function fillPersonSelect(select, selected) {
@@ -231,7 +235,7 @@ function fillPersonSelect(select, selected) {
 function fillMetricSelect(select, selected) {
   select.innerHTML = metricOptions.map((metric) => {
     const isSelected = metric.id === selected ? "selected" : "";
-    return `<option value="${metric.id}" ${isSelected}>${metric.label}</option>`;
+    return `<option value="${metric.id}" ${isSelected}>${metricSelectLabel(metric)}</option>`;
   }).join("");
 }
 
@@ -239,6 +243,14 @@ function syncMetricChecks() {
   document.querySelectorAll("[data-metric]").forEach((box) => {
     box.checked = state.metrics.has(box.value);
   });
+}
+
+function syncCorrelationFromMetrics() {
+  const { x, y } = correlationMetricsFrom(state.metrics);
+  state.corrX = x;
+  state.corrY = y;
+  fillMetricSelect(el.corrX, state.corrX);
+  fillMetricSelect(el.corrY, state.corrY);
 }
 
 function checkedValues(selector) {
