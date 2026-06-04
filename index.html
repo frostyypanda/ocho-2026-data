@@ -19,12 +19,12 @@
           <h1 id="appTitle"></h1>
         </div>
 
-        <label class="field">
+        <label class="field" data-scope="overview distribution people correlation explorer">
           <span>Search</span>
           <input id="searchInput" type="search" placeholder="name, region, school">
         </label>
 
-        <div class="control-grid compact">
+        <div class="control-grid compact" data-scope="distribution people">
           <label class="field">
             <span>Values</span>
             <select id="modeSelect">
@@ -33,13 +33,13 @@
               <option value="raw">Raw</option>
             </select>
           </label>
-          <label class="field">
+          <label class="field" data-scope="distribution">
             <span>Bucket <b id="bucketValue">5%</b></span>
             <input id="bucketInput" type="range" min="1" max="25" value="5">
           </label>
         </div>
 
-        <section class="control-section">
+        <section class="control-section" data-scope="overview distribution people correlation">
           <h2>Metrics</h2>
           <div class="quick-buttons">
             <button data-metric-set="summary" type="button">Summary</button>
@@ -50,19 +50,19 @@
           <div id="metricPicker" class="metric-picker"></div>
         </section>
 
-        <section class="control-section">
+        <section class="control-section" data-scope="overview distribution people">
           <h2>People</h2>
-          <label class="field">
+          <label class="field" data-scope="distribution">
             <span>Distribution highlights</span>
             <select id="highlightSelect" multiple size="5"></select>
           </label>
-          <label class="field">
+          <label class="field" data-scope="overview people">
             <span>Comparison people</span>
             <select id="peopleSelect" multiple size="5"></select>
           </label>
         </section>
 
-        <section class="control-section">
+        <section class="control-section" data-scope="overview distribution people correlation explorer">
           <h2>Filters</h2>
           <div class="filter-block">
             <span>Region</span>
@@ -74,7 +74,7 @@
           </div>
         </section>
 
-        <section class="control-section">
+        <section class="control-section" data-scope="correlation">
           <h2>Correlation</h2>
           <div class="control-grid">
             <label class="field">

@@ -187,11 +187,21 @@ function updateSort(key) {
 }
 
 function setActiveView() {
+  const overview = state.view === "overview";
+  el.kpis.hidden = !overview;
+  el.insights.hidden = !overview;
+  updateControlScopes();
   document.querySelectorAll("[data-view]").forEach((button) => {
     button.classList.toggle("active", button.dataset.view === state.view);
   });
   document.querySelectorAll(".view").forEach((view) => {
     view.hidden = view.id !== `${state.view}View`;
+  });
+}
+
+function updateControlScopes() {
+  document.querySelectorAll("[data-scope]").forEach((node) => {
+    node.hidden = !node.dataset.scope.split(" ").includes(state.view);
   });
 }
 
