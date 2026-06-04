@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OChO 2026 Data Visualizer</title>
+    <link rel="preconnect" href="https://cdn.plot.ly">
+    <link rel="preconnect" href="https://unpkg.com">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module" src="src/app.js"></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="control-rail">
+        <div class="brand-block">
+          <p id="appSubtitle"></p>
+          <h1 id="appTitle"></h1>
+        </div>
+
+        <label class="field">
+          <span>Search</span>
+          <input id="searchInput" type="search" placeholder="name, region, school">
+        </label>
+
+        <div class="control-grid compact">
+          <label class="field">
+            <span>Values</span>
+            <select id="modeSelect">
+              <option value="percent" selected>Percent</option>
+              <option value="points">Points</option>
+              <option value="raw">Raw</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Bins <b id="binValue">10</b></span>
+            <input id="binInput" type="range" min="4" max="18" value="10">
+          </label>
+        </div>
+
+        <section class="control-section">
+          <h2>Metrics</h2>
+          <div class="quick-buttons">
+            <button data-metric-set="summary" type="button">Summary</button>
+            <button data-metric-set="theory" type="button">Theory</button>
+            <button data-metric-set="practical" type="button">Practical</button>
+            <button data-metric-set="all" type="button">All</button>
+          </div>
+          <div id="metricPicker" class="metric-picker"></div>
+        </section>
+
+        <section class="control-section">
+          <h2>People</h2>
+          <label class="field">
+            <span>Distribution highlights</span>
+            <select id="highlightSelect" multiple size="5"></select>
+          </label>
+          <label class="field">
+            <span>Comparison people</span>
+            <select id="peopleSelect" multiple size="5"></select>
+          </label>
+        </section>
+
+        <section class="control-section">
+          <h2>Filters</h2>
+          <div class="filter-block">
+            <span>Region</span>
+            <div id="regionFilters" class="check-grid"></div>
+          </div>
+          <div class="filter-block">
+            <span>Prize</span>
+            <div id="prizeFilters" class="check-grid small"></div>
+          </div>
+        </section>
+
+        <section class="control-section">
+          <h2>Correlation</h2>
+          <div class="control-grid">
+            <label class="field">
+              <span>X</span>
+              <select id="corrX"></select>
+            </label>
+            <label class="field">
+              <span>Y</span>
+              <select id="corrY"></select>
+            </label>
+          </div>
+        </section>
+      </aside>
+
+      <main class="workspace">
+        <header class="top-bar">
+          <nav class="tabs" aria-label="Views">
+            <button class="active" data-view="overview" type="button"><i data-lucide="layout-dashboard"></i> Overview</button>
+            <button data-view="distribution" type="button"><i data-lucide="bar-chart-3"></i> Distribution</button>
+            <button data-view="people" type="button"><i data-lucide="users"></i> People</button>
+            <button data-view="correlation" type="button"><i data-lucide="scatter-chart"></i> Correlation</button>
+            <button data-view="explorer" type="button"><i data-lucide="table-2"></i> Explorer</button>
+          </nav>
+        </header>
+
+        <section id="kpis" class="kpi-grid"></section>
+        <section id="insights" class="insight-strip"></section>
+
+        <section id="overviewView" class="view">
+          <div class="chart-grid two">
+            <div class="panel chart tall"><div id="leaderboardChart"></div></div>
+            <div class="panel chart"><div id="difficultyChart"></div></div>
+            <div class="panel chart"><div id="regionChart"></div></div>
+            <div class="panel chart"><div id="swingChart"></div></div>
+          </div>
+        </section>
+
+        <section id="distributionView" class="view" hidden>
+          <div class="chart-grid single">
+            <div class="panel chart wide"><div id="distributionChart"></div></div>
+            <div id="distributionStats" class="panel table-panel"></div>
+          </div>
+        </section>
+
+        <section id="peopleView" class="view" hidden>
+          <div class="chart-grid two">
+            <div class="panel chart"><div id="peopleBarChart"></div></div>
+            <div class="panel chart"><div id="peopleRadarChart"></div></div>
+          </div>
+        </section>
+
+        <section id="correlationView" class="view" hidden>
+          <div class="stat-pill" id="correlationStat"></div>
+          <div class="chart-grid two">
+            <div class="panel chart"><div id="correlationChart"></div></div>
+            <div class="panel chart"><div id="heatmapChart"></div></div>
+          </div>
+        </section>
+
+        <section id="explorerView" class="view" hidden>
+          <div id="detailTable" class="panel table-panel detail-table"></div>
+        </section>
+
+        <footer id="sourceNote"></footer>
+      </main>
+    </div>
+  </body>
+</html>
