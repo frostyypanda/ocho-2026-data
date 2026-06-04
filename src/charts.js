@@ -2,25 +2,22 @@ import {
   fmt,
   metricLabel,
   metricMeta,
-  metricOptions,
   metricValue,
   pairwiseCorrelations,
   pearson,
-  pct,
   regionBreakdown,
-  summaryFor,
   taskDifficulty,
   topSwings,
 } from "./stats.js";
 
-const colors = ["#2563eb", "#dc7b22", "#0f8f72", "#b83280", "#6366f1", "#a16207", "#0891b2", "#be123c"];
-const template = {
+export const colors = ["#2563eb", "#dc7b22", "#0f8f72", "#b83280", "#6366f1", "#a16207", "#0891b2", "#be123c"];
+export const template = {
   paper_bgcolor: "rgba(255,255,255,0)",
   plot_bgcolor: "rgba(255,255,255,0)",
   font: { family: "Inter, system-ui, sans-serif", color: "#172033" },
   margin: { t: 34, r: 24, b: 46, l: 56 },
 };
-const config = { responsive: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d"] };
+export const config = { responsive: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d"] };
 
 export function renderOverview(people) {
   const ranked = [...people].sort((a, b) => b.totals.total - a.totals.total);
@@ -101,63 +98,6 @@ export function renderOverview(people) {
     xaxis: { title: "percentage-point difference", zeroline: true },
     yaxis: { automargin: true },
   });
-}
-
-export function renderDistribution(people, metricIds, highlightIds, mode, bins) {
-  const traces = metricIds.map((metricId, index) => ({
-    x: people.map((person) => metricValue(person, metricId, mode)),
-    type: "histogram",
-    name: metricMeta(metricId).label,
-    nbinsx: bins,
-    opacity: metricIds.length > 1 ? 0.58 : 0.82,
-    marker: { color: colors[index % colors.length] },
-    hovertemplate: `${metricLabel(metricId, mode)}<br>%{x:.2f}<br>count %{y}<extra></extra>`,
-  }));
-  const highlights = people.filter((person) => highlightIds.includes(person.id));
-  const highlightCount = highlights.length * metricIds.length;
-  const topMargin = Math.min(170, 44 + highlightCount * 18);
-  const shapes = [];
-  const annotations = [];
-
-  highlights.forEach((person, personIndex) => {
-    metricIds.forEach((metricId, metricIndex) => {
-      const value = metricValue(person, metricId, mode);
-      const width = mode === "percent" ? 1.2 : 0.35;
-      shapes.push({
-        type: "rect",
-        x0: value - width,
-        x1: value + width,
-        y0: 0,
-        y1: 1,
-        yref: "paper",
-        fillcolor: colors[personIndex % colors.length],
-        opacity: 0.14,
-        line: { width: 0 },
-      });
-      annotations.push({
-        x: value,
-        y: 1.02 + (personIndex * metricIds.length + metricIndex) * 0.055,
-        yref: "paper",
-        text: `${shortName(person.name)} - ${metricMeta(metricId).label.replace(" total", "")}`,
-        showarrow: false,
-        font: { size: 11, color: "#172033" },
-        bgcolor: "rgba(255,255,255,.82)",
-      });
-    });
-  });
-
-  plot("distributionChart", traces, {
-    ...template,
-    margin: { ...template.margin, t: topMargin },
-    title: "Distribution",
-    barmode: metricIds.length > 1 ? "overlay" : "group",
-    shapes,
-    annotations,
-    xaxis: { title: mode === "percent" ? "score percent" : mode },
-    yaxis: { title: "participants" },
-    legend: { orientation: "h" },
-  });
-  renderStatsTable("distributionStats", metricIds, people, mode);
 }
 
 export function renderPeopleComparison(people, selectedIds, metricIds, mode) {
@@ -254,15 +194,7 @@ export function renderHeatmap(people, metricIds) {
   });
 }
 
-function renderStatsTable(elementId, metricIds, people, mode) {
-  const rows = metricIds.map((metricId) => {
-    const stats = summaryFor(metricId, people, mode);
-    return `<tr><td>${metricMeta(metricId).label}</td><td>${fmt(stats.average)}</td><td>${fmt(stats.median)}</td><td>${fmt(stats.stdev)}</td><td>${fmt(stats.min)}</td><td>${fmt(stats.max)}</td></tr>`;
-  });
-  document.getElementById(elementId).innerHTML = `<table><thead><tr><th>Metric</th><th>Avg</th><th>Median</th><th>SD</th><th>Min</th><th>Max</th></tr></thead><tbody>${rows.join("")}</tbody></table>`;
-}
-
-function plot(id, traces, layout) {
+export function plot(id, traces, layout) {
   const node = document.getElementById(id);
   if (node && window.Plotly) window.Plotly.react(node, traces, layout, config);
 }
@@ -281,9 +213,4 @@ function linearFit(xs, ys) {
 function corrLabel(r) {
   const strength = Math.abs(r) > 0.75 ? "strong" : Math.abs(r) > 0.45 ? "moderate" : "weak";
   return `${strength} ${r >= 0 ? "positive" : "negative"}`;
-}
-
-function shortName(name) {
-  const parts = name.split(" ");
-  return parts.length > 1 ? parts.at(-1) : name;
 }

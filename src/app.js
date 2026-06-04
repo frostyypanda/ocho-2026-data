@@ -13,11 +13,11 @@ import {
 } from "./stats.js";
 import {
   renderCorrelation,
-  renderDistribution,
   renderHeatmap,
   renderOverview,
   renderPeopleComparison,
 } from "./charts.js";
+import { renderDistribution } from "./distribution.js";
 import { renderDetailTable } from "./table.js";
 
 const state = {
@@ -29,7 +29,7 @@ const state = {
   highlights: new Set(["kazazic-kei"]),
   people: new Set(["glueckert-alexander", "kazazic-kei", "koell-finn"]),
   mode: "percent",
-  bins: 10,
+  bucketSize: 5,
   corrX: "theory",
   corrY: "practical",
   sort: { key: "rank", dir: "asc" },
@@ -49,7 +49,7 @@ function bindElements() {
   [
     "searchInput",
     "modeSelect",
-    "binInput",
+    "bucketInput",
     "regionFilters",
     "prizeFilters",
     "metricPicker",
@@ -68,6 +68,7 @@ function populateControls() {
   document.getElementById("appTitle").textContent = CONTEST.title;
   document.getElementById("appSubtitle").textContent = CONTEST.subtitle;
   el.sourceNote.textContent = CONTEST.sourceNote;
+  syncBucketLabel();
   el.regionFilters.innerHTML = checkboxList(unique(PARTICIPANTS.map((person) => person.region)), "region");
   el.prizeFilters.innerHTML = checkboxList(unique(PARTICIPANTS.map((person) => person.prize)), "prize");
   el.metricPicker.innerHTML = metricOptions.map(metricCheckbox).join("");
@@ -97,11 +98,12 @@ function attachEvents() {
   });
   el.modeSelect.addEventListener("change", () => {
     state.mode = el.modeSelect.value;
+    syncBucketLabel();
     render();
   });
-  el.binInput.addEventListener("input", () => {
-    state.bins = Number(el.binInput.value);
-    document.getElementById("binValue").textContent = state.bins;
+  el.bucketInput.addEventListener("input", () => {
+    state.bucketSize = Number(el.bucketInput.value);
+    syncBucketLabel();
     render();
   });
   el.metricPicker.addEventListener("change", () => {
@@ -144,7 +146,7 @@ function render() {
   renderDetailTable(el.detailTable, people, state, updateSort);
 
   if (state.view === "overview") renderOverview(people);
-  if (state.view === "distribution") renderDistribution(people, metrics, [...state.highlights], state.mode, state.bins);
+  if (state.view === "distribution") renderDistribution(people, metrics, [...state.highlights], state.mode, state.bucketSize);
   if (state.view === "people") renderPeopleComparison(people, [...state.people], metrics, state.mode);
   if (state.view === "correlation") {
     renderCorrelation(people, state.corrX, state.corrY);
@@ -191,6 +193,11 @@ function setActiveView() {
   document.querySelectorAll(".view").forEach((view) => {
     view.hidden = view.id !== `${state.view}View`;
   });
+}
+
+function syncBucketLabel() {
+  const suffix = state.mode === "percent" ? "%" : "";
+  document.getElementById("bucketValue").textContent = `${state.bucketSize}${suffix}`;
 }
 
 function checkboxList(values, kind) {

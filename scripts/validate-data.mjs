@@ -1,4 +1,5 @@
 import { CONTEST, PARTICIPANTS, PROBLEMS } from "../src/data.js";
+import { summaryFor } from "../src/stats.js";
 
 const tolerance = 0.04;
 const ids = new Set(PARTICIPANTS.map((person) => person.id));
@@ -31,6 +32,9 @@ PARTICIPANTS.forEach((person, index) => {
 
 const totalMax = CONTEST.totals.theory + CONTEST.totals.practical;
 assert(totalMax === CONTEST.totals.total, "summary max totals add to 100");
+assertClose(summaryFor("total", PARTICIPANTS, "percent").q1, 47.31, "total Q1 percent");
+assertClose(summaryFor("total", PARTICIPANTS, "percent").median, 51.03, "total median percent");
+assertClose(summaryFor("total", PARTICIPANTS, "percent").q3, 67.35, "total Q3 percent");
 
 console.log(`Validated ${PARTICIPANTS.length} participants, ${PROBLEMS.length} problems, and corrected practical row mapping.`);
 

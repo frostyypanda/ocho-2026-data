@@ -52,7 +52,9 @@ export function summaryFor(metricId, people, mode = "points") {
   const values = people.map((person) => metricValue(person, metricId, mode));
   return {
     average: mean(values),
+    q1: percentile(values, 25),
     median: median(values),
+    q3: percentile(values, 75),
     stdev: stdev(values),
     min: Math.min(...values),
     max: Math.max(...values),
@@ -132,10 +134,17 @@ function mean(values) {
 }
 
 function median(values) {
+  return percentile(values, 50);
+}
+
+function percentile(values, percentileValue) {
   const sorted = [...values].sort((a, b) => a - b);
-  const middle = Math.floor(sorted.length / 2);
   if (!sorted.length) return 0;
-  return sorted.length % 2 ? sorted[middle] : (sorted[middle - 1] + sorted[middle]) / 2;
+  const index = ((sorted.length - 1) * percentileValue) / 100;
+  const lower = Math.floor(index);
+  const upper = Math.ceil(index);
+  const weight = index - lower;
+  return sorted[lower] * (1 - weight) + sorted[upper] * weight;
 }
 
 function stdev(values) {

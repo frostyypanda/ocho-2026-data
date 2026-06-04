@@ -300,6 +300,11 @@ input[type="range"] {
   min-height: 520px;
 }
 
+.chart.compact-chart,
+.chart.compact-chart > div {
+  min-height: 360px;
+}
+
 .stat-pill {
   display: inline-flex;
   align-items: baseline;

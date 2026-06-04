@@ -34,8 +34,8 @@
             </select>
           </label>
           <label class="field">
-            <span>Bins <b id="binValue">10</b></span>
-            <input id="binInput" type="range" min="4" max="18" value="10">
+            <span>Bucket <b id="bucketValue">5%</b></span>
+            <input id="bucketInput" type="range" min="1" max="25" value="5">
           </label>
         </div>
 
@@ -115,6 +115,7 @@
         <section id="distributionView" class="view" hidden>
           <div class="chart-grid single">
             <div class="panel chart wide"><div id="distributionChart"></div></div>
+            <div class="panel chart compact-chart"><div id="boxPlotChart"></div></div>
             <div id="distributionStats" class="panel table-panel"></div>
           </div>
         </section>
